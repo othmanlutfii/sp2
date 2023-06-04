@@ -1,0 +1,584 @@
+<!--
+=========================================================
+* * Black Dashboard - v1.0.1
+=========================================================
+
+* Product Page: https://www.creative-tim.com/product/black-dashboard
+* Copyright 2019 Creative Tim (https://www.creative-tim.com)
+
+
+* Coded by Creative Tim
+
+=========================================================
+
+* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="apple-touch-icon" sizes="76x76" href="../static/img/apple-icon.png">
+  <link rel="icon" type="image/png" href="../static/img/favicon.png">
+  <title>
+    StockPredSA
+  </title>
+  <!--     Fonts and icons     -->
+  <link href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,600,700,800" rel="stylesheet" />
+  <link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">
+  <!-- Nucleo Icons -->
+  <link href="../static/css/nucleo-icons.css" rel="stylesheet" />
+  <!-- CSS Files -->
+  <link href="../static/css/black-dashboard.css?v=1.0.0" rel="stylesheet" />
+  <!-- CSS Just for demo purpose, don't include it in your project -->
+  <link href="../static/demo/demo.css" rel="stylesheet" />
+</head>
+
+<body class="">
+  <div class="wrapper">
+    <div class="sidebar">
+      <!--
+        Tip 1: You can change the color of the sidebar using: data-color="blue | green | orange | red"
+    -->
+      <div class="sidebar-wrapper">
+        <div class="logo">
+          <a href="javascript:void(0)" class="simple-text logo-mini">
+            SP2
+          </a>
+          <a href="javascript:void(0)" class="simple-text logo-normal">
+            Bisamillah nilai A
+          </a>
+        </div>
+        <ul class="nav">
+          <li class="active ">
+            <a href="/dashboard">
+              <i class="tim-icons icon-chart-pie-36"></i>
+              <p>Dashboard</p>
+            </a>
+          </li>
+          <li>
+            <a href="/">
+              <i class="tim-icons icon-bell-55"></i>
+              <p>Search</p>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="main-panel">
+      <!-- Navbar -->
+      <nav class="navbar navbar-expand-lg navbar-absolute navbar-transparent">
+        <div class="container-fluid">
+          <div class="navbar-wrapper">
+            <div class="navbar-toggle d-inline">
+              <button type="button" class="navbar-toggler">
+                <span class="navbar-toggler-bar bar1"></span>
+                <span class="navbar-toggler-bar bar2"></span>
+                <span class="navbar-toggler-bar bar3"></span>
+              </button>
+            </div>
+            <a class="navbar-brand" href="javascript:void(0)">Dashboard Of Stock Price and Sentiment Prediction</a>
+          </div>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navigation" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-bar navbar-kebab"></span>
+            <span class="navbar-toggler-bar navbar-kebab"></span>
+            <span class="navbar-toggler-bar navbar-kebab"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navigation">
+            <ul class="navbar-nav ml-auto">
+              <li class="search-bar input-group">
+                <button class="btn btn-link" id="search-button" data-toggle="modal" data-target="#searchModal"><i class="tim-icons icon-zoom-split" ></i>
+                  <span class="d-lg-none d-md-block">Search</span>
+                </button>
+              </li>
+              <li class="separator d-lg-none"></li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+      <div class="modal modal-search fade" id="searchModal" tabindex="-1" role="dialog" aria-labelledby="searchModal" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <input type="text" class="form-control" id="inlineFormInputGroup" placeholder="SEARCH">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <i class="tim-icons icon-simple-remove"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- End Navbar -->
+      <div class="content">
+        <div class = "row">
+          <div class="col-lg-12">
+            <div class="card card-chart">
+              <div class="card-header">
+                <h5 class="card-category">${{ kode_saham }}</h5>
+                <h3 class="card-title">
+                  <!-- <i class="tim-icons icon-atom text-primary"></i>  -->
+                  Prediksi Harga saham {{ banyakprediksi1 }} Hari Kedepan
+                </h3>            
+              </div>
+              <div class="card-body">
+                <div class="chart-area">
+                  <canvas id="chartLinePurple"></canvas>
+                </div>
+              </div>
+            </div>
+              <div class="card card-chart">
+                <div class="card-header">
+                  <h5 class="card-category">${{ kode_saham }}</h5>
+                  <h3 class="card-title"><i class="tim-icons icon-time-alarm text-success"></i> Grafik Perbandingan Harga Prediksi Setiap Model</h3>
+                </div>
+                <div class="card-body">
+                  <div class="chart-area">
+                    <canvas id="chartLineGreen"></canvas>
+                  </div>
+                </div>
+              </div>
+          </div>
+        </div>
+
+<!-- baris2 -->
+        <div class="row">
+          <div class="col-lg-6 col-md-12">
+            <div class="card card-chart">
+              <div class="card-header">
+                <h5 class="card-category">Sentiment Analysis</h5>
+                <h3 class="card-title"><i class="tim-icons icon-bell-55 text-primary"></i>Overall Sentiment: {{ ov_sentiment }}</h3>
+              </div>
+              <div class="card-body">
+                <div class="card card-chart">
+                  <canvas id="chart-line" width=330 height=216></canvas>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-6 col-md-12">
+            <div class="card card-chart">
+              <div class="card-header">
+                <h5 class="card-category">OUR RECOMENDATION</h5>
+                <h3 class="card-title"><i class="tim-icons icon-delivery-fast text-info"></i> Rekomendasi Keputusan: {{ keputusan_final }}</h3>
+              </div>
+              <div class="card-body">
+                {{ keterangan_keutusan }}
+              </div>
+            </div>
+          </div>
+        </div>
+<!-- baris3 -->
+        <div class="row">
+          <div class="col-lg-4 col-md-12">
+            <!-- Tabel Pertama -->
+            <div class="card">
+              <div class="card-header">
+                <h4 class="card-title">Tabel Prediksi LSTM</h4>
+              </div>
+              <div class="card-body">
+                <div class="table-responsive">
+                  <table class="table tablesorter">
+                    <thead class=" text-primary">
+                      <tr>
+                        <th>
+                          Tanggal
+                        </th>
+                        <th>
+                          Harga Prediksi
+                        </th>
+                        <th>
+                          Indkator
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {% for row in df_tabel_lstm %}
+                      <tr>
+                          <td>{{ row['Tanngal'] }}</td>
+                          <td>{{ row['Predicted_Price'] }}</td>
+                          <td>{{ row['Indicator'] }}</td>
+                      </tr>
+                      {% endfor %}
+                    </tbody>
+
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-4 col-md-12">
+            <!-- Tabel Kedua -->
+            <div class="card">
+              <div class="card-header">
+                <h4 class="card-title">Tabel Prediksi ARIMA</h4>
+              </div>
+              <div class="card-body">
+                <div class="table-responsive">
+                  <table class="table tablesorter">
+                    <thead class=" text-primary">
+                      <tr>
+                        <th>
+                          Tanggal
+                        </th>
+                        <th>
+                          Harga Prediksi
+                        </th>
+                        <th>
+                          Indkator
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {% for row in df_tabel_arima %}
+                      <tr>
+                          <td>{{ row['Tanngal'] }}</td>
+                          <td>{{ row['Predicted_Price'] }}</td>
+                          <td>{{ row['Indicator'] }}</td>
+                      </tr>
+                      {% endfor %}
+                    </tbody>
+
+
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-4 col-md-12">
+            <!-- Tabel Ketiga -->
+            <div class="card">
+              <div class="card-header">
+                <h4 class="card-title">Tabel Prediksi SVR</h4>
+              </div>
+              <div class="card-body">
+                <div class="table-responsive">
+                  <table class="table tablesorter">
+                    <thead class=" text-primary">
+                      <tr>
+                        <th>
+                          Tanggal
+                        </th>
+                        <th>
+                          Harga Prediksi
+                        </th>
+                        <th>
+                          Indkator
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {% for row in df_tabel_svr %}
+                      <tr>
+                          <td>{{ row['Tanngal'] }}</td>
+                          <td>{{ row['Predicted_Price'] }}</td>
+                          <td>{{ row['Indicator'] }}</td>
+                      </tr>
+                      {% endfor %}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+<!-- baris4 -->
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="card card-chart">
+              <div class="card-header">
+                <h5 class="card-category">${{ kode_saham }}</h5>
+                <h3 class="card-title">
+                  Perbandingan harga asli dan prediksi
+                </h3>
+              </div>
+              <div class="card-body">
+                <div class="card-body text-center">
+                <img src='../static/output_files/model_lstmhasil.jpg' alt="model_lstmhasil" style="width: 370px; height: 240px;">
+                <img src="../static/output_files/model_arimahasil.jpg" alt="model_arimahasil" style="width: 370px; height: 240px;">
+                <img src="../static/output_files/model_svrhasil.jpg" alt="model_svrhasil" style="width: 370px; height: 240px;">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+<!-- g -->
+        <div class="row">
+          <div class="col-12">
+            <div class="card">
+              <div class="card-header">
+                <h4 class="card-title">Tweets of {{ symbol }}</h4>
+              </div>
+              <div class="card-body">
+                <table class="table tablesorter">
+                  <thead class=" text-primary">
+                    <tr>
+                      <th>
+                        Tweet
+                      </th>
+                      <th>
+                        Sentiment
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for row in last_tweets_df %}
+                    <tr>
+                        <td>{{ row['Tweet'] }}</td>
+                        <td>{{ row['Sentiment'] }}</td>
+                    </tr>
+                    {% endfor %}
+                  </tbody>
+  
+                </table>
+              </div>
+            </div>
+            
+          </div>
+        </div>
+        
+
+        
+
+
+      </div>
+      <footer class="footer">
+        <div class="container-fluid">
+          <div class="copyright">
+            ©
+            <script>
+              document.write(new Date().getFullYear())
+            </script> made with <i class="tim-icons icon-heart-2"></i> by
+            <a href="javascript:void(0)" target="_blank">StockPredSA</a> for a better prediction web.
+          </div>
+        </div>
+      </footer>
+    </div>
+  </div>
+  <div class="fixed-plugin">
+    <div class="dropdown show-dropdown">
+      <a href="#" data-toggle="dropdown">
+        <i class="fa fa-cog fa-2x"> </i>
+      </a>
+      <ul class="dropdown-menu">
+        <li class="header-title"> Sidebar Background</li>
+        <li class="adjustments-line">
+          <a href="javascript:void(0)" class="switch-trigger background-color">
+            <div class="badge-colors text-center">
+              <span class="badge filter badge-primary active" data-color="primary"></span>
+              <span class="badge filter badge-info" data-color="blue"></span>
+              <span class="badge filter badge-success" data-color="green"></span>
+            </div>
+            <div class="clearfix"></div>
+          </a>
+        </li>
+        <li class="adjustments-line text-center color-change">
+          <span class="color-label">LIGHT MODE</span>
+          <span class="badge light-badge mr-2"></span>
+          <span class="badge dark-badge ml-2"></span>
+          <span class="color-label">DARK MODE</span>
+        </li>
+        <li class="button-container text-center">
+          <a class="github-button" >StockPredSA</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <!--   Core JS Files   -->
+  <script src="../static/js/core/jquery.min.js"></script>
+  <script src="../static/js/core/popper.min.js"></script>
+  <script src="../static/js/core/bootstrap.min.js"></script>
+  <script src="../static/js/plugins/perfect-scrollbar.jquery.min.js"></script>
+  <!--  Google Maps Plugin    -->
+  <!-- Place this tag in your head or just before your close body tag. -->
+  <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY_HERE"></script>
+  <!-- Chart JS -->
+  <script src="../static/js/plugins/chartjs.min.js"></script>
+  <!--  Notifications Plugin    -->
+  <script src="../static/js/plugins/bootstrap-notify.js"></script>
+  <!-- Control Center for Black Dashboard: parallax effects, scripts for the example pages etc -->
+  <script src="../static/js/black-dashboard.min.js?v=1.0.0"></script><!-- Black Dashboard DEMO methods, don't include it in your project! -->
+  <script src="../static/demo/demo.js"></script>
+  <script> 
+    var pred_dep_lstm = '{{ pred_dep_lstm | tojson }}';
+    var pred_dep_arima = '{{ pred_dep_arima | tojson }}';
+    var pred_dep_svr = '{{ pred_dep_svr | tojson }}';
+    var numbers = '{{ numbers | tojson }}';
+
+    var pred_lstm = '{{ pred_lstm | tojson }}';
+    var pred_arima = '{{ pred_arima | tojson }}';
+    var pred_svr = '{{ pred_svr | tojson }}';
+    var number_act = '{{ number_act | tojson }}';
+    var actual_price = '{{ actual_price | tojson }}';
+    var list_data_test = '{{ list_data_test | tojson }}';
+    var list_tanggal_prediksi = '{{ list_tanggal_prediksi | tojson }}';
+    // console.log(typeof actual_price); 
+    // console.log(typeof values); 
+
+
+
+
+
+    
+
+
+
+
+
+
+  </script>
+
+<script>
+  $(document).ready(function() {
+      var ctx = $("#chart-line");
+      var myLineChart = new Chart(ctx, {
+          type: 'doughnut',
+          data: {
+              labels: JSON.parse('{{ labels_sen | safe }}'),
+              datasets: [{
+                  data: JSON.parse('{{ values_sen | safe }}'),
+                  backgroundColor: ["rgba(255, 0, 0, 0.5)", "rgba(100, 255, 0, 0.5)", "rgba(200, 50, 255, 0.5)", "rgba(0, 100, 255, 0.5)"]
+              }]
+          },
+          options: {
+              title: {
+                  display: true,
+                  text: 'SENTIMENT'
+              }
+          }
+      });
+  });
+</script>
+
+  <script>
+    $(document).ready(function() {
+      $().ready(function() {
+        $sidebar = $('.sidebar');
+        $navbar = $('.navbar');
+        $main_panel = $('.main-panel');
+
+        $full_page = $('.full-page');
+
+        $sidebar_responsive = $('body > .navbar-collapse');
+        sidebar_mini_active = true;
+        white_color = false;
+
+        window_width = $(window).width();
+
+        fixed_plugin_open = $('.sidebar .sidebar-wrapper .nav li.active a p').html();
+
+
+
+        $('.fixed-plugin a').click(function(event) {
+          if ($(this).hasClass('switch-trigger')) {
+            if (event.stopPropagation) {
+              event.stopPropagation();
+            } else if (window.event) {
+              window.event.cancelBubble = true;
+            }
+          }
+        });
+
+        $('.fixed-plugin .background-color span').click(function() {
+          $(this).siblings().removeClass('active');
+          $(this).addClass('active');
+
+          var new_color = $(this).data('color');
+
+          if ($sidebar.length != 0) {
+            $sidebar.attr('data', new_color);
+          }
+
+          if ($main_panel.length != 0) {
+            $main_panel.attr('data', new_color);
+          }
+
+          if ($full_page.length != 0) {
+            $full_page.attr('filter-color', new_color);
+          }
+
+          if ($sidebar_responsive.length != 0) {
+            $sidebar_responsive.attr('data', new_color);
+          }
+        });
+
+        $('.switch-sidebar-mini input').on("switchChange.bootstrapSwitch", function() {
+          var $btn = $(this);
+
+          if (sidebar_mini_active == true) {
+            $('body').removeClass('sidebar-mini');
+            sidebar_mini_active = false;
+            blackDashboard.showSidebarMessage('Sidebar mini deactivated...');
+          } else {
+            $('body').addClass('sidebar-mini');
+            sidebar_mini_active = true;
+            blackDashboard.showSidebarMessage('Sidebar mini activated...');
+          }
+
+          // we simulate the window Resize so the charts will get updated in realtime.
+          var simulateWindowResize = setInterval(function() {
+            window.dispatchEvent(new Event('resize'));
+          }, 180);
+
+          // we stop the simulation of Window Resize after the animations are completed
+          setTimeout(function() {
+            clearInterval(simulateWindowResize);
+          }, 1000);
+        });
+
+        $('.switch-change-color input').on("switchChange.bootstrapSwitch", function() {
+          var $btn = $(this);
+
+          if (white_color == true) {
+
+            $('body').addClass('change-background');
+            setTimeout(function() {
+              $('body').removeClass('change-background');
+              $('body').removeClass('white-content');
+            }, 900);
+            white_color = false;
+          } else {
+
+            $('body').addClass('change-background');
+            setTimeout(function() {
+              $('body').removeClass('change-background');
+              $('body').addClass('white-content');
+            }, 900);
+
+            white_color = true;
+          }
+
+
+        });
+
+        $('.light-badge').click(function() {
+          $('body').addClass('white-content');
+        });
+
+        $('.dark-badge').click(function() {
+          $('body').removeClass('white-content');
+        });
+      });
+    });
+  </script>
+  <script>
+    $(document).ready(function() {
+      // Javascript method's body can be found in static/js/demos.js
+      demo.initDashboardPageCharts();
+
+    });
+  </script>
+  <script src="https://cdn.trackjs.com/agent/v3/latest/t.js"></script>
+  <script>
+    window.TrackJS &&
+      TrackJS.install({
+        token: "ee6fab19c5a04ac1a32a645abde4613a",
+        application: "black-dashboard-free"
+      });
+  </script>
+</body>
+
+</html>
