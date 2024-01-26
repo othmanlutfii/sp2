@@ -9,7 +9,4 @@ SP2 is a web-based application designed to assist users in making informed decis
 - **Historical Data Visualization**: Users can visualize historical stock price data to gain insights into stock performance over time.
 - **Sentiment Analysis (Temporarily Disabled)**: The platform includes a sentiment analysis feature that provides insights into market sentiment based on Twitter data. However, this feature is currently disabled.
 
-## Getting Started
-
-To run the SP2 application on your local machine, follow these steps:
 
