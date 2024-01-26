@@ -232,62 +232,65 @@ def submit():
     # print(len(prediksi3[0]))
     # print(len(prediksi3[1]))
 
-    # Perform sentiment analysis
-    symbol = request.form['namasaham']
-    print(symbol)
-    today = datetime.today().date()
-    since_date = (today - timedelta(days=30)).strftime("%Y-%m-%d")
+    # # Perform sentiment analysis
+    # symbol = request.form['namasaham']
+    # print(symbol)
+    # today = datetime.today().date()
+    # since_date = (today - timedelta(days=30)).strftime("%Y-%m-%d")
 
-    # Tentukan kueri pencarian
-    query = f'${symbol} since:{since_date}'
+    # # Tentukan kueri pencarian
+    # query = f'${symbol} since:{since_date}'
 
-    # Ambil tweet dan simpan dalam sebuah list
-    tweets = []
-    for tweet in sntwitter.TwitterSearchScraper(query).get_items():
-        tweets.append([tweet.date, tweet.rawContent])
+    # # Ambil tweet dan simpan dalam sebuah list
+    # tweets = []
+    # for tweet in sntwitter.TwitterSearchScraper(query).get_items():
+    #     tweets.append([tweet.date, tweet.rawContent])
 
-    # Konversi list ke DataFrame dan simpan sebagai file CSV
-    df = pd.DataFrame(tweets, columns=['date', 'rawContent'])
-    print(df)
+    # # Konversi list ke DataFrame dan simpan sebagai file CSV
+    # df = pd.DataFrame(tweets, columns=['date', 'rawContent'])
+    # print(df)
 
-    cleaned_tweets = [clean_text(tweet) for tweet in df['rawContent'] if tweet is not None]
-    sentiment_labels = [get_sentiment(tweet) for tweet in cleaned_tweets if tweet is not None]
+    # cleaned_tweets = [clean_text(tweet) for tweet in df['rawContent'] if tweet is not None]
+    # sentiment_labels = [get_sentiment(tweet) for tweet in cleaned_tweets if tweet is not None]
 
-    positive_count = sentiment_labels.count('Positive')
-    negative_count = sentiment_labels.count('Negative')
-    neutral_count = sentiment_labels.count('Neutral')
+    # positive_count = sentiment_labels.count('Positive')
+    # negative_count = sentiment_labels.count('Negative')
+    # neutral_count = sentiment_labels.count('Neutral')
 
-    # Get the last 5 tweets and their sentiment labels
-    last_tweets = df.tail(5)['rawContent'].tolist()
-    last_sentiments = sentiment_labels[-5:]
+    # # Get the last 5 tweets and their sentiment labels
+    # last_tweets = df.tail(5)['rawContent'].tolist()
+    # last_sentiments = sentiment_labels[-5:]
 
-    # Create a DataFrame with the last 5 tweets and their sentiment labels
-    last_tweets_df = pd.DataFrame({'Tweet': last_tweets, 'Sentiment': last_sentiments})
-    df_tabel_lstm1 = last_tweets_df.to_dict('records')
+    # # Create a DataFrame with the last 5 tweets and their sentiment labels
+    # last_tweets_df = pd.DataFrame({'Tweet': last_tweets, 'Sentiment': last_sentiments})
+    # df_tabel_lstm1 = last_tweets_df.to_dict('records')
 
-    labels = ['Positive', 'Neutral', 'Negative']
-    values = [positive_count, neutral_count, negative_count]
+    # labels = ['Positive', 'Neutral', 'Negative']
+    # # values = [positive_count, neutral_count, negative_count]
 
-    # print(positive_count, neutral_count, negative_count)
+    
 
-    # Visualize sentiment distribution
-    plt.figure()
-    # plt.pie(values, labels=labels, autopct='%1.1f%%')
+
+    # # print(positive_count, neutral_count, negative_count)
+
+    # # Visualize sentiment distribution
+    # plt.figure()
+    # # plt.pie(values, labels=labels, autopct='%1.1f%%')
+    # # plt.title(f'Stock {symbol} Sentiment Analysis')
+    # # plt.savefig(f'static/output_files/tweet_sentiment.jpg')
+    # # # Add value labels to the bars
+    # # for i, value in enumerate(values):
+    # #     plt.text(i, value, str(value), ha='center')
+    # # Visualize sentiment distribution
+    # plt.bar(labels, values)
+    # plt.xlabel('Sentiment')
+    # plt.ylabel('Count')
     # plt.title(f'Stock {symbol} Sentiment Analysis')
-    # plt.savefig(f'static/output_files/tweet_sentiment.jpg')
     # # Add value labels to the bars
     # for i, value in enumerate(values):
     #     plt.text(i, value, str(value), ha='center')
-    # Visualize sentiment distribution
-    plt.bar(labels, values)
-    plt.xlabel('Sentiment')
-    plt.ylabel('Count')
-    plt.title(f'Stock {symbol} Sentiment Analysis')
-    # Add value labels to the bars
-    for i, value in enumerate(values):
-        plt.text(i, value, str(value), ha='center')
 
-    plt.savefig(f'static/output_files/tweet_sentiment.jpg')
+    # plt.savefig(f'static/output_files/tweet_sentiment.jpg')
 
     list_pred_final = process_output.banding_list(output_tabel_lstm,output_tabel_arima,output_tabel_svr)
 
@@ -303,6 +306,11 @@ def submit():
     down_count1 = str(len(down_list))
     up_count = len(up_list)
     down_count =  len(down_list)
+
+    values = [10, 10, 10]
+    positive_count=10
+    neutral_count=10
+    negative_count = 10
 
     if neutral_count <= positive_count:
         ov_sentiment = "POSITIF"
@@ -367,9 +375,9 @@ def submit():
                         df_tabel_lstm = df_tabel_lstm,
                         df_tabel_arima = df_tabel_arima,
                         df_tabel_svr = df_tabel_svr,
-                        symbol=symbol, 
-                        last_tweets_df=df_tabel_lstm1, 
-                        labels_sen=json.dumps(labels), 
+                        # symbol=symbol, 
+                        # last_tweets_df=df_tabel_lstm1, 
+                        # labels_sen=json.dumps(labels), 
                         values_sen= json.dumps(values) ,
                         list_tanggal_prediksi = list_tanggal_prediksi,
                         keputusan_final = keputusan_final,
